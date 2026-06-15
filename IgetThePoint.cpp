@@ -55,9 +55,9 @@ public:
         return result;
     }
 
-    // return x or y coordinate
-    double operator[](char coord) {
-        if (coord == 'x') {
+    // 0 returns x, 1 returns y
+    double operator[](int index) {
+        if (index == 0) {
             return x;
         }
         else {
@@ -65,15 +65,57 @@ public:
         }
     }
 
+    // prefix ++ increments x
+    Point operator++() {
+        x++;
+        Point result(x, y);
+        return result;
+    }
+
+    // postfix ++ increments y
+    Point operator++(int) {
+        y++;
+        Point result(x, y);
+        return result;
+    }
+
+    // prefix -- decrements x
+    Point operator--() {
+        x--;
+        Point result(x, y);
+        return result;
+    }
+
+    // postfix -- decrements y
+    Point operator--(int) {
+        y--;
+        Point result(x, y);
+        return result;
+    }
+
     // getters
     double getX() { return x; }
     double getY() { return y; }
+
+    // setters
+    void setX(double x_value) { x = x_value; }
+    void setY(double y_value) { y = y_value; }
 };
 
 // print point in (x, y) format
 ostream& operator<<(ostream& out, Point p) {
     out << "(" << p.getX() << ", " << p.getY() << ")";
     return out;
+}
+
+// read point from input in (x, y) format
+istream& operator>>(istream& in, Point& p) {
+    char c;
+    double x_val, y_val;
+    in >> c >> x_val >> c >> y_val >> c;
+    p.setX(x_val);
+    p.setY(y_val);
+    return in;
 }
 
 int main() {
@@ -91,8 +133,24 @@ int main() {
     cout << "p1 * 2: " << p1 * 2 << endl;
     cout << "p1 * 2.0: " << p1 * 2.0 << endl;
     cout << "p1 * -3: " << p1 * -3 << endl;
-    cout << "p1['x']: " << p1['x'] << endl;
-    cout << "p1['y']: " << p1['y'] << endl;
+    cout << "p1[0]: " << p1[0] << endl;
+    cout << "p1[1]: " << p1[1] << endl;
+
+    // test ++ and --
+    ++p1;
+    cout << "After ++p1: " << p1 << endl;
+    p1++;
+    cout << "After p1++: " << p1 << endl;
+    --p1;
+    cout << "After --p1: " << p1 << endl;
+    p1--;
+    cout << "After p1--: " << p1 << endl;
+
+    // test >>
+    Point p4(0, 0);
+    cout << "Enter a point (x, y): ";
+    cin >> p4;
+    cout << "You entered: " << p4 << endl;
 
     return 0;
 }
